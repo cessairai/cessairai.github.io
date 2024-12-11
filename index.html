@@ -1,140 +1,25 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="0.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cessair</title>
-    <link
-      rel="shortcut icon"
-      href="https://i.ibb.co/4FVQT2j/eye.png"
-      type="image/x-icon"
-    />
-    <link rel="icon" type="image/x-icon" href="https://i.ibb.co/4FVQT2j/eye.png">
-  </head>
-  <body>
-    <!-- Display project name -->
-    <h2 class="omn">CESSAIR</h2>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat with Model</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Chat with AI Model</h1>
+        
+        <div class="chat-box">
+            <input type="text" id="user-input" placeholder="Ask something..." />
+            <button id="send-button">Send</button>
+        </div>
 
-    <div id="promptDisplay"></div>
-
-    <!-- Text input box for manual input -->
-    <div class="niu1">
-      <input
-        type="text"
-        id="textInput"
-        placeholder="Type your prompt here..."
-        style="padding: 10px; width: 300px; font-size: 16px"
-      />
-      <button id="textSubmitBtn">Submit</button>
+        <div class="output-box">
+            <textarea id="output" rows="6" placeholder="Response will appear here..." readonly></textarea>
+        </div>
     </div>
 
-    <!-- Buttons for voice input and stopping -->
-    <div class="niu">
-      <button id="startBtn">Speak</button>
-      <button id="stopBtn">Stop</button>
-    </div>
-
-    <!-- Area to display the response -->
-    <div id="result" style="margin-top: 20px">
-      <p id="responseText"></p>
-      <img id="generatedImage" src="" alt="" style="max-width: 100%; margin-top: 10px;" />
-    </div>
-
-    <!-- Import @huggingface/inference -->
-    <script type="module">
-      import { HfInference } from "@huggingface/inference";
-
-      const client = new HfInference("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");
-
-      // Function to generate chat completion
-      async function generateContent(prompt) {
-        if (!prompt) {
-          alert("Please enter a prompt");
-          return;
-        }
-
-        if (
-          prompt.toLowerCase().includes("generate image") ||
-          prompt.toLowerCase().includes("create image") ||
-          prompt.toLowerCase().includes("image of") ||
-          prompt.toLowerCase().includes("picture of")
-        ) {
-          // Generate image if prompt includes image generation requests
-          await generateImage(prompt);
-          return;
-        }
-
-        try {
-          const chatCompletion = await client.chatCompletion({
-            model: "Qwen/Qwen2.5-72B-Instruct",
-            messages: [
-              {
-                role: "user",
-                content: prompt,
-              },
-            ],
-            max_tokens: 500,
-          });
-
-          const responseText = chatCompletion.choices[0].message.content;
-
-          // Display the response in the corresponding HTML element
-          document.getElementById("responseText").innerText = responseText;
-
-          // Optionally, add text-to-speech for the response
-          speak(responseText);
-        } catch (error) {
-          console.error("Error:", error);
-          alert("There was an error processing your request.");
-        }
-      }
-
-      // Function to generate an image
-      async function generateImage(prompt) {
-        try {
-          const response = await client.textToImage({
-            model: "stabilityai/stable-diffusion-2-1",
-            inputs: prompt,
-          });
-
-          // Convert the response to a URL
-          const imageUrl = URL.createObjectURL(response);
-
-          // Display the generated image
-          const generatedImageElement = document.getElementById("generatedImage");
-          generatedImageElement.src = imageUrl;
-
-          // Add optional audio feedback
-          speak("Image generated successfully.");
-        } catch (error) {
-          console.error("Error generating image:", error);
-          alert("There was an error generating the image.");
-        }
-      }
-
-      function speak(text) {
-        const utterance = new SpeechSynthesisUtterance(text);
-        utterance.rate = 1.2;
-        window.speechSynthesis.speak(utterance);
-      }
-
-      // Event listener for the submit button
-      document.getElementById("textSubmitBtn").addEventListener("click", () => {
-        const userInput = document.getElementById("textInput").value.trim();
-        if (userInput) {
-          generateContent(userInput);
-          document.getElementById("textInput").value = "";
-          document.getElementById("promptDisplay").innerText = `You said: ${userInput}`;
-        }
-      });
-    </script>
-  </body>
+    <script src="script.js"></script>
+</body>
 </html>
