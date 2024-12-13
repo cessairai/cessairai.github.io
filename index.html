@@ -554,16 +554,6 @@
           const rateControl = document.getElementById("rateControl");
           const utterance = new SpeechSynthesisUtterance(text);
 
-          // Select voice
-          const selectedOption = voiceSelect.selectedOptions[0];
-          const selectedVoice = voices.find(
-            (voice) => voice.name === selectedOption.getAttribute("data-name")
-          );
-
-          if (selectedVoice) {
-            utterance.voice = selectedVoice;
-          }
-
           // Apply pitch and rate
           utterance.pitch = parseFloat(pitchControl.value);
           utterance.rate = parseFloat(rateControl.value);
