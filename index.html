@@ -479,7 +479,6 @@
         }
 
         populateVoiceList() {
-          const voiceSelect = document.getElementById("voiceSelect");
           voices = speechSynthesis.getVoices();
 
           voices.forEach((voice, index) => {
@@ -487,7 +486,6 @@
             option.textContent = `${voice.name} (${voice.lang})`;
             option.setAttribute("data-lang", voice.lang);
             option.setAttribute("data-name", voice.name);
-            voiceSelect.appendChild(option);
           });
         }
 
@@ -549,7 +547,6 @@
         }
 
         speakResponse(text) {
-          const voiceSelect = document.getElementById("voiceSelect");
           const pitchControl = document.getElementById("pitchControl");
           const rateControl = document.getElementById("rateControl");
           const utterance = new SpeechSynthesisUtterance(text);
