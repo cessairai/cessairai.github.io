@@ -22,15 +22,6 @@
         --shadow-subtle: rgba(0, 0, 0, 0.1);
         --shadow-medium: rgba(0, 0, 0, 0.2);
       }
-        @font-face {
-      font-family: 'Regista Grande';
-      src: url('kugile.regular.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-      body {
-      font-family: 'Regista Grande', sans-serif;
-    }
 
       * {
         margin: 0;
@@ -46,7 +37,15 @@
         line-height: 1.5;
         overflow-x: hidden;
       }
-
+            @font-face {
+      font-family: 'Regista Grande';
+      src: url('kugile.regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+      body {
+      font-family: 'Regista Grande', sans-serif;
+    }
       .container {
         max-width: 900px;
         margin: 0 auto;
@@ -184,16 +183,21 @@
         padding: 15px;
         border-radius: 16px;
         box-shadow: 0 10px 25px var(--shadow-subtle);
+        text-align: center; /* Center the entire voice controls section */
       }
-
+      
       .voice-settings {
         display: flex;
+        justify-content: center; /* Center the voice settings content */
         gap: 15px;
         margin-top: 10px;
         align-items: center;
-        justify-content: center;
       }
-
+      
+      #voiceSelect {
+        width: 200px; /* Set a specific width for the dropdown */
+      }
+      
       #voiceSelect,
       input[type="range"] {
         background-color: var(--input-bg);
