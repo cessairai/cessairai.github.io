@@ -178,14 +178,89 @@
         transform: scale(0.95);
       }
 
-      .voice-controls {
-        margin-top: 20px;
-        background-color: var(--bg-secondary);
-        padding: 15px;
-        border-radius: 16px;
-        box-shadow: 0 10px 25px var(--shadow-subtle);
-        text-align: center; /* Center the entire voice controls section */
-      }
+  .voice-controls {
+    margin-top: 20px;
+    background-color: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px var(--shadow-subtle);
+    text-align: center;
+  }
+
+  #speechRecognitionBtn {
+    background-color: var(--accent-color);
+    color: var(--bg-primary);
+    border: none;
+    border-radius: 12px;
+    padding: 12px 24px;
+    font-family: "Inter", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+  }
+
+  #speechRecognitionBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  }
+
+  #speechRecognitionBtn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  #speechRecognitionBtn::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23121212' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z'%3E%3C/path%3E%3Cpath d='M19 10v2a7 7 0 0 1-14 0v-2'%3E%3C/path%3E%3Cline x1='12' y1='19' x2='12' y2='23'%3E%3C/line%3E%3Cline x1='8' y1='23' x2='16' y2='23'%3E%3C/line%3E%3C/svg%3E") center/contain no-repeat;
+  }
+
+  #speechRecognitionBtn.recording {
+    background-color: #ff4444;
+    animation: pulse 1.5s infinite;
+  }
+
+  #speechRecognitionBtn.recording::before {
+    animation: bounce 1s infinite;
+  }
+
+  @keyframes pulse {
+    0% { 
+      box-shadow: 0 0 0 0 rgba(255, 68, 68, 0.4);
+    }
+    70% { 
+      box-shadow: 0 0 0 10px rgba(255, 68, 68, 0);
+    }
+    100% { 
+      box-shadow: 0 0 0 0 rgba(255, 68, 68, 0);
+    }
+  }
+
+  @keyframes bounce {
+    0%, 100% { 
+      transform: translateY(0);
+    }
+    50% { 
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    #speechRecognitionBtn {
+      width: 100%;
+      padding: 14px 20px;
+      font-size: 0.9rem;
+    }
+  }
       
       .voice-settings {
         display: flex;
@@ -593,6 +668,14 @@ function initializeSpeechRecognition() {
             }
           }
         }
+        document.getElementById('speechRecognitionBtn').addEventListener('click', function() {
+  this.classList.toggle('recording');
+  if (this.classList.contains('recording')) {
+    this.textContent = 'Stop Recording';
+  } else {
+    this.textContent = 'Start Voice Recognition';
+  }
+});
 
         speakResponse(text) {
           const pitchControl = document.getElementById("pitchControl");
