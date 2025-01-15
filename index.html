@@ -575,6 +575,14 @@ function initializeSpeechRecognition() {
     alert('Speech recognition is not supported in this browser.');
   }
 });
+document.getElementById('speechRecognitionBtn').addEventListener('click', function() {
+  this.classList.toggle('recording');
+  if (this.classList.contains('recording')) {
+    this.textContent = 'Stop Recording';
+  } else {
+    this.textContent = 'Start Voice Recognition';
+  }
+});
       class ChatApp {
         constructor() {
           this.initializeEventListeners();
@@ -669,14 +677,6 @@ function initializeSpeechRecognition() {
             }
           }
         }
-        document.getElementById('speechRecognitionBtn').addEventListener('click', function() {
-  this.classList.toggle('recording');
-  if (this.classList.contains('recording')) {
-    this.textContent = 'Stop Recording';
-  } else {
-    this.textContent = 'Start Voice Recognition';
-  }
-});
 
         speakResponse(text) {
           const pitchControl = document.getElementById("pitchControl");
