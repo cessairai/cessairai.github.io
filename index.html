@@ -371,6 +371,7 @@
         </div>
       </div>
       <div class="voice-controls">
+        <button id="speechRecognitionBtn">Start Speech Recognition</button>
         <div class="voice-settings">
           <label for="pitchControl">Pitch:</label>
           <input
@@ -454,15 +455,62 @@
           chatApp.toggleControls(true); // Enable controls
         }
       }
+      let recognition;
 
+function initializeSpeechRecognition() {
+  if ('speechRecognition' in window || 'webkitSpeechRecognition' in window) {
+    recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US'; // Set the language as needed
+
+    recognition.onstart = () => {
+      console.log('Speech recognition started.');
+    };
+
+    recognition.onresult = (event) => {
+      let transcript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      document.getElementById('userInput').value += transcript;
+    };
+
+    recognition.onend = () => {
+      console.log('Speech recognition stopped.');
+    };
+  } else {
+    console.log('Speech recognition not supported in this browser.');
+  }
+}
+      document.getElementById('speechRecognitionBtn').addEventListener('click', () => {
+  if (recognition && recognition.start) {
+    if (recognition.lang !== 'en-US') {
+      recognition.lang = 'en-US'; // Set desired language
+    }
+    if (recognition.onspeechend) {
+      recognition.stop();
+      document.getElementById('speechRecognitionBtn').innerText = 'Start Speech Recognition';
+    } else {
+      recognition.start();
+      document.getElementById('speechRecognitionBtn').innerText = 'Stop Speech Recognition';
+    }
+  } else {
+    alert('Speech recognition is not supported in this browser.');
+  }
+});
       class ChatApp {
         constructor() {
           this.initializeEventListeners();
           this.populateVoiceList();
+          this.initializeSpeechRecognition();
           this.audioWave = document.querySelector(".audio-wave");
           this.sendButton = document.getElementById("sendButton");
           this.voiceControls = document.querySelector(".voice-settings");
         }
+          initializeSpeechRecognition() {
+    initializeSpeechRecognition();
+  }
 
         initializeEventListeners() {
           document
